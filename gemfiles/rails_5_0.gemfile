@@ -12,6 +12,7 @@ gem "redcarpet"
 gem "unicorn"
 gem "rails", "5.0.0.beta3"
 gem "rspec-rails", "~> 3.5.0.beta3", :group => [:development, :test]
+gem "kaminari", ">= 0.17"
 
 group :development do
   gem "web-console", ">= 2.1.3"
