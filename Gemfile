@@ -1,20 +1,15 @@
 source 'https://rubygems.org'
 
-ruby "2.2.3"
-
 gemspec
 
 gem "administrate-field-image"
-gem "delayed_job_active_record"
-gem "high_voltage"
-gem "markdown-rails"
+gem "autoprefixer-rails"
+gem "faker"
+gem "globalid"
 gem "pg"
 gem "redcarpet"
+gem "sentry-raven"
 gem "unicorn"
-
-group :development do
-  gem "web-console", ">= 2.1.3"
-end
 
 group :development, :test do
   gem "appraisal"
@@ -22,22 +17,23 @@ group :development, :test do
   gem "bundler-audit", require: false
   gem "byebug"
   gem "dotenv-rails"
-  gem "factory_girl_rails"
-  gem "faker"
-  gem "i18n-tasks"
+  gem "factory_bot_rails"
+  gem "i18n-tasks", "0.9.29"
   gem "pry-rails"
-  gem "rspec-rails", "~> 3.4.2"
 end
 
 group :test do
   gem "ammeter"
+  gem "capybara", "3.28.0"
   gem "database_cleaner"
   gem "formulaic"
   gem "launchy"
   gem "poltergeist"
-  gem "shoulda-matchers", "~> 2.8.0", require: false
+  gem "pundit"
+  gem "shoulda-matchers"
   gem "timecop"
   gem "webmock"
+  gem "xpath", "3.2.0"
 end
 
 group :staging, :production do

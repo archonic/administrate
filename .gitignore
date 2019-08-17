@@ -14,3 +14,10 @@
 /tags
 /tmp/*
 /spec/example_app/tmp/*
+pkg
+*.ipr
+*.iws
+*.iml
+/.idea
+.byebug_history
+gemfiles/.bundle/

@@ -16,8 +16,288 @@
 
 ## Changes
 
-### Upcoming Release
+### 0.11.0 (September 17, 2018)
 
+* [COMPAT] [#1260] Upgrade Ruby to 2.5.1.
+* [COMPAT] [#1216] Update ffi from 1.9.23 to 1.9.25.
+* [DOC] [#1166] Add forgotten .with_options in documentation .
+* [DOC] [#1199] Update customizing_dashboards doc.
+* [i18n] [#1200] Fix error in suggested translation key.
+* [DOC] [#1177] Return a 404 when docs pages are not found.
+* [i18n] [#1192] Fix i18n inconsistencies in forms for associations.
+* [FEATURE] [#945] Sort has_many fields.
+* [COMPAT] [#1169] Configure Capybara to use webrick.
+* [i18n] [#1163] Add missing zh-TW translations.
+* [DOC] [#1157] Fix has_many and polymorphic fields docs.
+* [BUGFIX] [#892] Fix search bar hiding even w/searchable attributes.
+* [i18n] [#1153] Add Indonesian locale.
+* [BUGFIX] [#1150] Ensure persistent order in pagination spec.
+
+### 0.10.0 (April 20, 2018)
+
+* [BUGFIX] [#1121] Fix a bug where polymorphic fields could throw an exception.
+* [BUGFIX] [#1129] Include time for date_time field in index.
+* [i18n] [#1132] Add missing Russian locale error message.
+* [DOC] [#1131] Document that numbers are searchable.
+* [DOC] [#1145] Add `.byebug_history` and `gemfiles/.bundle/` to .gitignore.
+* [COMPAT] [#1148] Support Rails 5.2.
+* [DOC] [#1119] Add link to Authorization documentation.
+* [BUGFIX] [#1107] Exclude routes with modules, but no namespace.
+* [i18n] [#1117] Add translation for Albanian language.
+* [i18n] [#1115] Translate error message to Japanese.
+* [DOC] [#1106] Update Customizing Views docs with sidebar generator.
+* [FEATURE] [#1005] Add ability to search through association fields.
+* [FEATURE] [#1059] Use associated_class to render belongs_to links.
+* [FEATURE] [#961] Show errors when has_many restrict_with_error.
+* [FEATURE] [#1104] Add `scope` option to Field::BelongsTo.
+* [BUGFIX] [#1070] Use application timezone by default for DateTime fields.
+* [FEATURE] [#998] Add a password field type.
+* [FEATURE] [#903] Added Time Field.
+* [COMPAT] [#1103] Use cross-DB way to cast search queries to strings.
+
+### 0.9.0 (February 17, 2018)
+
+* [COMPAT] [#1098] Update all the dependent gems.
+* [COMPAT] [#1099] Update shoulda-matchers from 2.8.0 to 3.1.2.
+* [DOC] [#1081] Update Field::Polymorphic doc to include order option.
+* [COMPAT] [#1095] Upgrade nokogiri to 1.8.2.
+* [i18n] [#1094] Translate form error keys in French.
+* [COMPAT] [#1079] Cast all search queries to text.
+* [COMPAT] [#1077] Switch out squiggly-heredoc for Ruby 2.2 support.
+* [COMPAT] [#1077] Add Ruby 2.2.9 to Circle and clarify support.
+* [BUGFIX] [#1076] [#1078] Fix issues with flaky tests due to ordering
+* [COMPAT] [#1075] Upgrade Circle CI Postgres to 10.1.
+* [COMPAT] [#1032] Add additional Rubies to CI using Workflows.
+* [COMPAT] [#1074] Upgrade to Ruby 2.5.0.
+* [BUGFIX] [#1046] Fix wrong variable name in new_resource key.
+* [i18n] [#1055] Singularize field name in HasMany index partial.
+* [BUGFIX] [#1068] Only define Punditize if Pundit has been loaded.
+* [COMPAT] [#1067] Include pundit in the Gemfiles.
+* [i18n] [#1056] Don't pluralise "New [resource]" buttons.
+* [i18n] [#1057] Translate form error keys in Catalan.
+* [i18n] [#1054] Add missing keys to Catalan.
+* [DOC] [#1040] Add a note about adding to Dashboards.
+* [BUGFIX] [#1028] Fix of class_name option on has_one fields.
+* [DOC] [#1052] Fix Typo in Changelog.
+* [FEATURE] [#999] Order attributes by association if it exists.
+* [DOC] [#1039] Merge both Field::BelongsTo options_with sections.
+* [i18n] [#1041] Improve German translation of form.errors.
+* [i18n] [#1004] Add form I18n keys to non-default locales.
+* [i18n] [#1004] Add show-/new-/edit- _resource I18n keys non-default locales.
+* [i18n] [#1004] Add and improve I18n for application templates.
+* [FEATURE] [#971] Add authorization features and a Pundit mixin.
+* [DOC] [#1031] Switch to Circle 2.0.
+* [FEATURE] [#1009] Option for Date(Time) objects be **in a timezone**.
+* [COMPAT] [#1027] Add hardcoded development secret_key_base.
+* [FEATURE] [#1020] Add support for editing polymorphic fields.
+* [FEATURE] [#956] Add namespace option to generators.
+* [DOC] [#1018] Remove suggestion than rerunning install works.
+* [COMPAT] [#1016] FactoryGirl is now FactoryBot.
+* [FEATURE] [#992] Improve field generators.
+* [DOC] [#1008] Adding instructions for getting started with API-only apps.
+* [i18n] [#988] Adds Catalan locales.
+* [FEATURE] [#1000] Add test coverage to ApplicationHelper#sort_order.
+* [UI] [#987] Fix cell sort indicator positioning.
+* [i18n] [#981] Add localization for Bosnian language.
+* [BUGFIX] [#982] Update name of specification example.
+* [DOC] [#980] Update copyright range.
+* [DOC] [#976] Explain that installer requires models.
+* [COMPAT] [#977] Update gems for CVE-2017-9050.
+* [BUGFIX] [#967] Change const_get to constantize to fix undefined method.
+* [DOC] [#972] Fix interpolation highlighting at documentation examples.
+* [FEATURE] [#807] Add foreign key option to Fields.
+* [FEATURE] [#939] Add order option for belongs_to field.
+* [DOC] [#946] Document renaming dashboards.
+* [DOC] [#942] Add IntelliJ-generated files to .gitignore.
+* [DOC] [#940] Add instructions of how to disable some actions.
+* [UI] [#933] Switch to thoughtbot hosted seed images.
+* [FEATURE] [#934] Support for models with uncountable inflections.
+
+### 0.8.1 (July 14, 2017)
+
+* [BUGFIX] [#935] Move normalize.css out of vendor.
+
+### 0.8.0 (July 14, 2017)
+
+* [FEATURE] [#788] Allow resource to be accessed from field.
+* [OPTIM] [#859] Remove dependency on remote images in tests.
+* [BUGFIX] [#771] Handle case where `Field::HasMany` data is nil.
+* [FEATURE] [#801] Add HasOne support as nested form.
+* [FEATURE] [#926] Accepts string instead of symbol on order.
+* [DOC] [#928] Fix partial name in view customization docs.
+* [BUGFIX] [#927] Remove rails-controller-testing gem to fix specs with Rails
+  4.2.
+* [BUGFIX] [#925] Silence ActiveRecord migration output during specs.
+* [CHANGE} [#924] Replace dashboard_class method with a delegate.
+* [BUGFIX] [#594] Fix Label Translation Lookup for has_many Collections.
+* [CHANGE] [#914] Allow custom scope for dashboards.
+* [CHANGE] [#916] Adds `_stylesheet` to the resources to be generated.
+* [UI] [#554] Make it easier to override Sass variables.
+* [FEATURE] [#910] Allow custom scope for dashboard resource.
+* [FEATURE] [#871] Add support for namespaced models.
+* [I18n] [#904] Improve Korean translation for search input.
+* [UI] [#881] Redesign search.
+* [I18n] [#902] Fixes to Dutch translation.
+* [COMPAT] [#887] Update autoprefixer-rails >= 6.0.
+* [UI] [#896] Make entire search bar clickable.
+* [I18n] [#891] Add translation for search input.
+* [UI] [#886] Fix `aria-labelledby` on tables.
+* [UI] [#884] Add `aria-sort` attribute to table headers.
+* [UI] [#882] Update normalize.css and change how we include it.
+* [OPTIM] [#898] Retroactively set migration versions.
+* [FEATURE] [#856] Allow Rails 5.1 usage.
+* [DOC] [#885] Update and test documentation navigation.
+* [UI] [#880] Use SVG `symbol` for icon system.
+* [CHANGE] [#883] Nested collection links should honour routes.
+* [UI] [#879] Remove unused SVG asset.
+* [DOCS] [#877] Add appraisal and foreman commands to docs.
+* [I18n] [#873] Add support for cyrillic search.
+* [CHANGE] [#857] Abstract model classes should be skipped without warning.
+
+### 0.7.0 (May 08, 2017)
+
+* [CHANGE] [#789] Remove Bourbon.
+* [CHANGE] [#789] Remove Neat.
+* [UI] [#874] Clean up base form styles.
+* [BUGFIX] [#872] Fix flaky failure by resetting column information.
+* [BUGFIX] [#872] Properly reset routes after each test.
+* [BUGFIX] [#872] Fix delayed_job failures.
+* [BUGFIX] [#872] Migrate DB in CI.
+* [UI] [#868] Add ARIA landmark roles.
+* [UI] [#868] Use a hyphen separator in page titles.
+* [UI] [#868] Add link underlines.
+* [UI] [#389] Applies a margin-bottom to attribute labels.
+* [UI] [#867] Refine look-and-feel.
+* [DOC] [#870] Document front-end architecture.
+* [DOC] [#869] Update SCSS-Lint configuration.
+* [UI] [#861] Tweak primary navigation.
+* [UI] [#863] Redesign focus outline styles.
+* [i18n] [#570] Localise Dates.
+* [UI] [#515] Wrap unsupported form field notes in proper divs.
+* [DOC] [#568] Update customizing_dashboards.md.
+* [UI] [#482] Wrap table cell contents instead of CSS truncation.
+* [CHANGE] [#854] Remove worker from Procfile.
+* [CHANGE] [#851] Remove dependency from ActionMailer.
+
+### 0.6.0 (May 02, 2017)
+
+* [CHANGE] [#845] Remove delayed_job_active_record dependency.
+* [CHANGE] [#817] Improve performance for n+1s.
+* [DOC] [#844] Remove the word "simply".
+* [CHANGE] [#791] Remove unneeded Rails dependencies.
+* [CHANGE] [#810] Add `sort_by` and `direction` option for HasMany field.
+* [CHANGE] [#842] Add support for big decimals in formatting numbers.
+* [CHANGE] [#793] Update Ruby to 2.4.1 and use .ruby-version on CircleCI.
+* [CHANGE] [#820] Remove markdown-rails and high_voltage.
+* [CHANGE] [#824] Install the latest bundler version on CI.
+* [CHANGE] [#824] Remove the web-console gem.
+* [CHANGE] [#823] Do not redirect to show page when selecting text.
+* [CHANGE] [#830] Add table name to search query.
+* [CHANGE] [#841] When the number data is a float, default to the decimal amount.
+* [CHANGE] [#698] Place Resource in the right namespace.
+* [CHANGE] [#698] Change sidebar partial to work w/namespaced models.
+* [BUGFIX] [#698] Fix inferred path issue w/name-spaced resources.
+* [CHANGE] [#822] Upgrade webmock to make compatible with Ruby 2.4.
+* [i18n] [#838] Improve translations for pl/uk.
+* [DOC] [#839] Add instructions on how to add dashboards
+* [DOC] [#837] Make path to documentation more noticeable
+* [i18n] [#826] Fixes some broken ja translations.
+* [DOC] [#821] Document how to use with Rails API.
+* [CHANGE] [#818] Update administrate-field-image to 1.1.0.
+* [DOC] [#815] Remove the last .keep.
+* [BUGFIX] [#814] Use an array of includes instead of a regex for Sass.
+* [BUGFIX] [#813] Wrap class_name arguments in strings.
+* [DOC] [#812] Remove some .keeps.
+* [UI] [#797] Stop using Sass glob importing.
+* [Docs] [#809] Add missing `suffix` docs for number field.
+* [i18n] [#803] Fix some broken zh-TW translations.
+
+### 0.5.0 (Mar 27, 2017)
+
+* [i18n] [#786] Backfill the missing translations (some from Google Translate).
+* [CHANGE] [#795] Loosen and update jquery-rails.
+* [CHANGE] [#792] Content with .preserve-whitespace should wrap.
+* [BUGFIX] [#611] Javascript: Fix row-click handler.
+* [CHANGE] [#569] Loosen normalize-rails required version.
+* [DOC] [#532] Add a short section about how to report vulnerabilities.
+* [CHANGE] [#784] Drop refills as a dependency.
+* [CHANGE] [#784] Change bourbon to be at least beta.6.
+* [FEATURE] [#505] let routes generator indent all routes.
+* [FEATURE] [#746] Add suffix/postfix option to number field.
+* [DOC] [#508] Add example of how to use a custom field.
+* [i18n] [#602] Adding Portuguese locale.
+* [i18n] [#603] Update administrate.pt-BR.yml.
+* [CHANGE] [#634] Add and set PLURAL_MANY_COUNT to 2.1.
+* [DOC] [#684] Add instructions on how to add dashboards.
+* [FEATURE] [#780] Add Sentry for the prototype app.
+* [i18n] [#772] Merge the existing translations before testing.
+* [DOC] [#783] Change README to use `0.4.0`.
+* [DOC] [#778] Clarify the version requirements.
+* [DOC] [#779] Update .rubocop.yml to follow thoughtbot/guides.
+* [DOC] [#781] Update readme screenshot.
+* [BUGFIX] [#559] Fix #558 : Wrong constant name guess.
+* [DOC] [#769] Mention guides in doc/ subdirectory.
+* [DOC] [#469] Path to custom attribute type updated in docs.
+* [CHANGE] [#774] Update Kaminari `~> 0.16` -> `>= 1.0`.
+* [DOC] [#776] Include docs in gem (via gemspec file listing).
+* [DOC] [#540] example on how to use custom file types.
+* [CHANGE] [#767] Add auto-prefixer.
+* [i18n] [#344] Add missing translations on edit/new/show actions.
+* [i18n] [#344] Add some action translations to administrate.en.
+* [i18n] [#344] Add some action translations to administrate.pt-BR.
+* [DOC] [#457] Document how to change resource labels in collections.
+* [FEATURE] [#466] Allow preloading has_many records.
+* [i18n] [#764] Add Korean i18n.
+* [FEATURE] [#597] Allow to limit route actions.
+* [BUGFIX] [#687] Fix broken sort arrow svg in the resource table.
+* [DOC] [#627] add doc for customizing admin dashboard layouts.
+* [BUGFIX] [#642] Add missing multiplier option for number fields.
+* [BUGFIX] [#465] Inline controller's `permitted_attributes` method.
+* [FEATURE] [#760] Add refills and refill-styled flashes.
+* [FEATURE] [#736] Paginate has_many show view.
+* [CHANGE] [#759] Update instances of bourbon to 5.0.0.beta.7; sass to ~>3.4.
+
+### 0.4.0 (Mar 03, 2017)
+
+* [DOC] Use Kaminari syntax in controller's comment hint.
+* [#747] [CHANGE] Fix a bug where `administrate:views` was creating the wrong
+  paths.
+* [#739] [#743] [BUGFIX] Dependent destroy demo app models.
+* [CHANGE] Remove boilerplate references to staging/production.
+* [CHANGE] Improve the `bin/` commands.
+* [#733] [CHANGE] Switch `administrate-field-image` to use the new release.
+* [#704] [I18n] Fix a typo on pt-BR translation for polymorphic.
+* [#730] [FEATURE] Hide the Search Bar when no attributes are searchable.
+* [#732] [I18n] Improve Japanese locales.
+* [#729] [FEATURE] Allow `primary_key` option on relationships instead of
+  hardcoding `id`.
+* [#728] [DOCS] Improve the docs around authentication.
+* [#727] [FEATURE] Add a link to show resource from the collection table.
+* [#726] [BUGFIX] Check for PhantomJS in the setup script.
+* [#721] [CHANGE] Use `count(:all)` for associations in HasMany fields.
+* [#683] [CHANGE] Add Bourbon as an explicit dependency.
+* [#713] [CHANGE] Avoid writing to `routes.rb` when no models exist.
+* [#704] [I18n] Fix word on pt-BR translation
+
+### 0.3.0 (Oct 28, 2016)
+
+* [#127] [UI] Add button to clear the search
+* [#656] [COMPAT] Add Rails 5 support
+
+### 0.2.2 (May 21, 2016)
+
+* [#560] [BUGFIX] Fix LoadError for apps that don't use images
+
+### 0.2.1 (May 18, 2016)
+
+* [#573] [FEATURE] Render custom javascripts and stylesheets to the page
+  by registering them with Administrate in an initializer.
+  For example, you can create `config/initializers/administrate.rb`
+  with the contents:
+    ```
+    Administrate::Engine.add_javascript "my_plugin/script"
+    Administrate::Engine.add_stylesheet "my_plugin/styles"
+    ```
 * [#567] [FEATURE] Add a partial for rendering HTML links to stylesheets.
   This is useful for plugin developers,
   as well as people who want to add custom stylesheets on a page-by-page basis

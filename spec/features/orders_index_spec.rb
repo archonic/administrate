@@ -33,7 +33,7 @@ feature "order index page" do
     order = create(:order)
 
     visit admin_orders_path
-    click_on "Edit"
+    click_on t("administrate.actions.edit")
 
     expect(current_path).to eq(edit_admin_order_path(order))
   end
@@ -53,6 +53,17 @@ feature "order index page" do
 
     expect(page).to have_flash(
       t("administrate.controller.destroy.success", resource: "Order")
+    )
+  end
+
+  scenario "cannot delete because associated payment" do
+    create(:payment, order: create(:order))
+
+    visit admin_orders_path
+    click_on t("administrate.actions.destroy")
+
+    expect(page).to have_flash(
+      "Cannot delete record because dependent payments exist", type: :error
     )
   end
 end

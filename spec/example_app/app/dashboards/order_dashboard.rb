@@ -2,7 +2,7 @@ require "administrate/base_dashboard"
 
 class OrderDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
-    id: Field::Number,
+    id: Field::Number.with_options(searchable: true),
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     address_line_one: Field::String,
@@ -14,6 +14,7 @@ class OrderDashboard < Administrate::BaseDashboard
     line_items: Field::HasMany,
     total_price: Field::Number.with_options(prefix: "$", decimals: 2),
     shipped_at: Field::DateTime,
+    payments: Field::HasMany,
   }
 
   READ_ONLY_ATTRIBUTES = [
