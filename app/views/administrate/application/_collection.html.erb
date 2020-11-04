@@ -33,7 +33,7 @@ to display a collection of resources in an HTML table.
         )) do %>
         <%= t(
           "helpers.label.#{collection_presenter.resource_name}.#{attr_name}",
-          default: attr_name.to_s,
+          default: resource_class.human_attribute_name(attr_name),
         ).titleize %>
             <% if collection_presenter.ordered_by?(attr_name) %>
               <span class="cell-label__sort-indicator cell-label__sort-indicator--<%= collection_presenter.ordered_html_class(attr_name) %>">
@@ -55,19 +55,21 @@ to display a collection of resources in an HTML table.
   <tbody>
     <% resources.each do |resource| %>
       <tr class="js-table-row"
-          tabindex="0"
-          <% if valid_action? :show, collection_presenter.resource_name %>
-            <%= %(role=link data-url=#{polymorphic_path([namespace, resource])}) %>
+          <% if show_action? :show, resource %>
+            <%= %(tabindex=0 role=link data-url=#{polymorphic_path([namespace, resource])}) %>
           <% end %>
           >
         <% collection_presenter.attributes_for(resource).each do |attribute| %>
           <td class="cell-data cell-data--<%= attribute.html_class %>">
             <% if show_action? :show, resource -%>
               <a href="<%= polymorphic_path([namespace, resource]) -%>"
+                 tabindex="-1"
                  class="action-show"
                  >
                 <%= render_field attribute %>
               </a>
+            <% else %>
+              <%= render_field attribute %>
             <% end -%>
           </td>
         <% end %>

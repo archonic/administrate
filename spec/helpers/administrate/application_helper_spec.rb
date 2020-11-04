@@ -8,6 +8,12 @@ RSpec.describe Administrate::ApplicationHelper do
       expect(displayed).to eq("Customers")
     end
 
+    it "can return singular of the model name" do
+      displayed = display_resource_name(:customer, singular: true)
+
+      expect(displayed).to eq("Customer")
+    end
+
     it "handles string arguments" do
       displayed = display_resource_name("customer")
 
@@ -20,9 +26,15 @@ RSpec.describe Administrate::ApplicationHelper do
       expect(displayed).to eq("Customers")
     end
 
+    it "handles namespaced resources" do
+      displayed = display_resource_name("blog/posts")
+
+      expect(displayed).to eq("Blog Posts")
+    end
+
     context "when translations are defined" do
-      it "uses the plural of the defined translation" do
-        translations = {
+      let(:translations) do
+        {
           activerecord: {
             models: {
               customer: {
@@ -32,25 +44,63 @@ RSpec.describe Administrate::ApplicationHelper do
             },
           },
         }
+      end
 
+      it "uses the plural of the defined translation as default" do
         with_translations(:en, translations) do
           displayed = display_resource_name(:customer)
 
           expect(displayed).to eq("Users")
         end
       end
+
+      it "uses the singular of the defined translation" do
+        with_translations(:en, translations) do
+          displayed = display_resource_name(:customer, singular: true)
+
+          expect(displayed).to eq("User")
+        end
+      end
+    end
+
+    context "using custom dashboards" do
+      it "pluralizes the resource name" do
+        displayed = display_resource_name("stat")
+
+        expect(displayed).to eq("Stats")
+      end
+
+      it "handles plural arguments" do
+        displayed = display_resource_name(:stats)
+
+        expect(displayed).to eq("Stats")
+      end
     end
   end
 
-  describe "#resource_index_route_key" do
-    it "handles index routes when resource is uncountable" do
-      route_key = resource_index_route_key(:series)
-      expect(route_key).to eq("series_index")
+  describe "#requireness" do
+    let(:page) do
+      Administrate::Page::Form.new(ProductDashboard.new, Product.new)
     end
 
-    it "handles normal inflection" do
-      route_key = resource_index_route_key(:customer)
-      expect(route_key).to eq("customers")
+    it "returns 'required' if field is required" do
+      name = page.attributes.detect { |i| i.attribute == :name }
+      expect(requireness(name)).to eq("required")
+    end
+
+    it "returns 'optional' if field is not required" do
+      release_year = page.attributes.detect { |i| i.attribute == :release_year }
+      expect(requireness(release_year)).to eq("optional")
+    end
+
+    it "returns 'optional' if field is required if condition is met" do
+      description = page.attributes.detect { |i| i.attribute == :description }
+      expect(requireness(description)).to eq("optional")
+    end
+
+    it "returns 'optional' if field is required unless condition is met" do
+      price = page.attributes.detect { |i| i.attribute == :price }
+      expect(requireness(price)).to eq("optional")
     end
   end
 

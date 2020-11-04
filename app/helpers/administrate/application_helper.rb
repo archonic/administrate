@@ -1,6 +1,7 @@
 module Administrate
   module ApplicationHelper
     PLURAL_MANY_COUNT = 2.1
+    SINGULAR_COUNT = 1
 
     def application_title
       if Rails::VERSION::MAJOR <= 5
@@ -11,21 +12,28 @@ module Administrate
     end
 
     def render_field(field, locals = {})
-      locals.merge!(field: field)
+      locals[:field] = field
       render locals: locals, partial: field.to_partial_path
     end
 
-    def class_from_resource(resource_name)
-      resource_name.to_s.classify.constantize
+    def requireness(field)
+      field.required? ? "required" : "optional"
     end
 
-    def display_resource_name(resource_name)
-      class_from_resource(resource_name).
-        model_name.
-        human(
-          count: PLURAL_MANY_COUNT,
-          default: resource_name.to_s.pluralize.titleize,
-        )
+    def dashboard_from_resource(resource_name)
+      "#{resource_name.to_s.singularize}_dashboard".classify.constantize
+    end
+
+    def model_from_resource(resource_name)
+      dashboard = dashboard_from_resource(resource_name)
+      dashboard.try(:model) || resource_name.to_sym
+    end
+
+    def display_resource_name(resource_name, opts = {})
+      dashboard_from_resource(resource_name).resource_name(
+        count: opts[:singular] ? SINGULAR_COUNT : PLURAL_MANY_COUNT,
+        default: default_resource_name(resource_name, opts),
+      )
     end
 
     def sort_order(order)
@@ -36,8 +44,11 @@ module Administrate
       end
     end
 
-    def resource_index_route_key(resource_name)
-      ActiveModel::Naming.route_key(class_from_resource(resource_name))
+    def resource_index_route(resource_name)
+      url_for(
+        action: "index",
+        controller: "/#{namespace}/#{resource_name}",
+      )
     end
 
     def sanitized_order_params(page, current_field_name)
@@ -45,13 +56,20 @@ module Administrate
       association_params = collection_names.map do |assoc_name|
         { assoc_name => %i[order direction page per_page] }
       end
-      params.permit(:search, :id, :page, :per_page, association_params)
+      params.permit(:search, :id, :_page, :per_page, association_params)
     end
 
     def clear_search_params
-      params.except(:search, :page).permit(
+      params.except(:search, :_page).permit(
         :per_page, resource_name => %i[order direction]
       )
+    end
+
+    private
+
+    def default_resource_name(name, opts = {})
+      resource_name = (opts[:singular] ? name.to_s : name.to_s.pluralize)
+      resource_name.gsub("/", "_").titleize
     end
   end
 end

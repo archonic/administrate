@@ -12,8 +12,20 @@ module Administrate
         field_type.dasherize
       end
 
+      def self.associative?
+        self < Associative
+      end
+
       def self.searchable?
         false
+      end
+
+      def self.field_type
+        to_s.split("::").last.underscore
+      end
+
+      def self.permitted_attribute(attr, _options = nil)
+        attr
       end
 
       def initialize(attribute, data, page, options = {})
@@ -22,10 +34,6 @@ module Administrate
         @page = page
         @resource = options.delete(:resource)
         @options = options
-      end
-
-      def self.permitted_attribute(attr, _options = nil)
-        attr
       end
 
       def html_class
@@ -40,15 +48,17 @@ module Administrate
         "/fields/#{self.class.field_type}/#{page}"
       end
 
-      attr_reader :attribute, :data, :page, :resource
+      def required?
+        return false unless resource.class.respond_to?(:validators_on)
 
-      protected
-
-      attr_reader :options
-
-      def self.field_type
-        to_s.split("::").last.underscore
+        resource.class.validators_on(attribute).any? do |v|
+          v.class == ActiveRecord::Validations::PresenceValidator &&
+            !v.options.include?(:if) &&
+            !v.options.include?(:unless)
+        end
       end
+
+      attr_reader :attribute, :data, :options, :page, :resource
     end
   end
 end

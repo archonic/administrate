@@ -90,20 +90,6 @@ describe Administrate::Generators::DashboardGenerator, :generator do
         expect(dashboard).to contain("orders: Field::HasMany")
       end
 
-      it "looks for class_name options on has_many fields" do
-        class Customer < ApplicationRecord
-          reset_column_information
-          has_many :purchases, class_name: "Order", foreign_key: "purchase_id"
-        end
-        dashboard = file("app/dashboards/customer_dashboard.rb")
-
-        run_generator ["customer"]
-
-        expect(dashboard).to contain(
-          'purchases: Field::HasMany.with_options(class_name: "Order")',
-        )
-      end
-
       it "assigns numeric fields a type of `Number`" do
         begin
           ActiveRecord::Schema.define do
@@ -130,28 +116,52 @@ describe Administrate::Generators::DashboardGenerator, :generator do
         end
       end
 
-      it "detects enum field as `String`" do
-        begin
-          ActiveRecord::Schema.define do
-            create_table :shipments do |t|
-              t.integer :status
-            end
+      it "detects enum field as `Select`" do
+        ActiveRecord::Schema.define do
+          create_table :shipments do |t|
+            t.integer :status
           end
-
-          class Shipment < ApplicationRecord
-            enum status: [:ready, :processing, :shipped]
-            reset_column_information
-          end
-
-          run_generator ["shipment"]
-          load file("app/dashboards/shipment_dashboard.rb")
-          attrs = ShipmentDashboard::ATTRIBUTE_TYPES
-
-          expect(attrs[:status]).
-            to eq(Administrate::Field::String.with_options(searchable: false))
-        ensure
-          remove_constants :Shipment, :ShipmentDashboard
         end
+
+        class Shipment < ApplicationRecord
+          enum status: %i[ready processing shipped]
+          reset_column_information
+        end
+
+        run_generator ["shipment"]
+        load file("app/dashboards/shipment_dashboard.rb")
+        attrs = ShipmentDashboard::ATTRIBUTE_TYPES
+
+        expect(attrs[:status].deferred_class).to eq(Administrate::Field::Select)
+      ensure
+        remove_constants :Shipment, :ShipmentDashboard
+      end
+
+      it "handles collection procs option in the 'Select' field" do
+        ActiveRecord::Schema.define do
+          create_table :shipments do |t|
+            t.integer :status
+          end
+        end
+
+        class Shipment < ApplicationRecord
+          enum status: %i[ready processing shipped]
+          reset_column_information
+        end
+
+        run_generator ["shipment"]
+        load file("app/dashboards/shipment_dashboard.rb")
+        attrs = ShipmentDashboard::ATTRIBUTE_TYPES
+        enum_collection_option = attrs[:status].options[:collection]
+        select_field = Administrate::Field::Select.new(:status,
+                                                       nil,
+                                                       attrs[:status].options,
+                                                       resource: Shipment.new)
+
+        expect(enum_collection_option.call(select_field)).
+          to eq(Shipment.statuses.keys)
+      ensure
+        remove_constants :Shipment, :ShipmentDashboard
       end
 
       it "detects boolean values" do
@@ -174,8 +184,8 @@ describe Administrate::Generators::DashboardGenerator, :generator do
         end
       end
 
-      it "assigns dates, times, and datetimes a type of `DateTime` and
-          `Time`" do
+      it "assigns dates, times, and datetimes a type of `Date`, `DateTime` and
+      `Time` respectively" do
         begin
           ActiveRecord::Schema.define do
             create_table :events do |t|
@@ -193,59 +203,11 @@ describe Administrate::Generators::DashboardGenerator, :generator do
           load file("app/dashboards/event_dashboard.rb")
           attrs = EventDashboard::ATTRIBUTE_TYPES
 
-          expect(attrs[:start_date]).to eq(Administrate::Field::DateTime)
+          expect(attrs[:start_date]).to eq(Administrate::Field::Date)
           expect(attrs[:start_time]).to eq(Administrate::Field::Time)
           expect(attrs[:ends_at]).to eq(Administrate::Field::DateTime)
         ensure
           remove_constants :Event, :EventDashboard
-        end
-      end
-
-      it "determines a class_name from `through` and `source` options" do
-        begin
-          ActiveRecord::Schema.define do
-            create_table :people
-            create_table :concerts
-            create_table(:numbers) { |t| t.references :ticket }
-
-            create_table :tickets do |t|
-              t.references :concert
-              t.references :attendee
-            end
-          end
-
-          class Concert < ApplicationRecord
-            reset_column_information
-            has_many :tickets
-            has_many :attendees, through: :tickets, source: :person
-            has_many :venues, through: :tickets
-            has_many :numbers, through: :tickets
-          end
-
-          class Ticket < ApplicationRecord
-            reset_column_information
-            belongs_to :concert
-            belongs_to :person
-            belongs_to :venue
-            has_many :numbers
-          end
-
-          class Number; end
-          class Person < ApplicationRecord
-            reset_column_information
-          end
-
-          dashboard = file("app/dashboards/concert_dashboard.rb")
-
-          run_generator ["concert"]
-
-          expect(dashboard).to contain(
-            'attendees: Field::HasMany.with_options(class_name: "Person"),',
-          )
-          expect(dashboard).to contain("venues: Field::HasMany,")
-          expect(dashboard).to contain("numbers: Field::HasMany,")
-        ensure
-          remove_constants :Concert, :Ticket, :Number, :Person
         end
       end
 
@@ -266,34 +228,6 @@ describe Administrate::Generators::DashboardGenerator, :generator do
           expect(attrs.keys).not_to include(:post_id)
         ensure
           remove_constants :Comment, :CommentDashboard
-        end
-      end
-
-      it "detects custom class names for belongs_to relationships" do
-        begin
-          ActiveRecord::Schema.define do
-            create_table :users
-            create_table :invitations do |t|
-              t.references :sender
-              t.references :recipient
-            end
-          end
-          class User < ApplicationRecord; end
-          class Invitation < ApplicationRecord
-            belongs_to :sender, class_name: "User"
-            belongs_to :recipient, class_name: "User"
-          end
-
-          run_generator ["invitation"]
-          load file("app/dashboards/invitation_dashboard.rb")
-          attrs = InvitationDashboard::ATTRIBUTE_TYPES
-
-          expected_field = Administrate::Field::BelongsTo.
-            with_options(class_name: "User")
-          expect(attrs[:sender]).to eq(expected_field)
-          expect(attrs[:recipient]).to eq(expected_field)
-        ensure
-          remove_constants :User, :Invitation, :InvitationDashboard
         end
       end
 

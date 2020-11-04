@@ -1,4 +1,6 @@
-# Customizing controller actions
+---
+title: Customizing controller actions
+---
 
 When you install Administrate into your app,
 we generate empty controllers for each of your resources.
@@ -39,5 +41,32 @@ class Admin::FoosController < Admin::ApplicationController
   #    resource_class.with_less_stuff
   #  end
   # end
+end
+```
+
+## Customizing Actions
+
+To enable or disable certain actions you could override `valid_action?` method in your dashboard controller like this:
+
+```ruby
+# disable 'edit' and 'destroy' links
+def valid_action?(name, resource = resource_class)
+  %w[edit destroy].exclude?(name.to_s) && super
+end
+```
+
+Action is one of `new`, `edit`, `show`, `destroy`.
+
+## Customizing Default Sorting
+
+To set the default sorting on the index action you could override `default_sorting_attribute` or `default_sorting_direction` in your dashboard controller like this:
+
+```ruby
+def default_sorting_attribute
+  :age
+end
+
+def default_sorting_direction
+  :desc
 end
 ```

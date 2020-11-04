@@ -5,18 +5,21 @@ module Administrate
     class DashboardGenerator < Rails::Generators::NamedBase
       ATTRIBUTE_TYPE_MAPPING = {
         boolean: "Field::Boolean",
-        date: "Field::DateTime",
+        date: "Field::Date",
         datetime: "Field::DateTime",
-        enum: "Field::String",
+        enum: "Field::Select",
         float: "Field::Number",
         integer: "Field::Number",
         time: "Field::Time",
         text: "Field::Text",
         string: "Field::String",
+        uuid: "Field::String",
       }
 
       ATTRIBUTE_OPTIONS_MAPPING = {
-        enum: { searchable: false },
+        # procs must be defined in one line!
+        enum: {  searchable: false,
+                 collection: ->(field) { field.resource.class.send(field.attribute.to_s.pluralize).keys } },
         float: { decimals: 2 },
       }
 
@@ -107,24 +110,16 @@ module Administrate
         if relationship.has_one?
           "Field::HasOne"
         elsif relationship.collection?
-          "Field::HasMany" + relationship_options_string(relationship)
+          "Field::HasMany"
         elsif relationship.polymorphic?
           "Field::Polymorphic"
         else
-          "Field::BelongsTo" + relationship_options_string(relationship)
+          "Field::BelongsTo"
         end
       end
 
       def klass
         @klass ||= Object.const_get(class_name)
-      end
-
-      def relationship_options_string(relationship)
-        if relationship.class_name != relationship.name.to_s.classify
-          options_string(class_name: relationship.class_name)
-        else
-          ""
-        end
       end
 
       def options_string(options)
@@ -136,7 +131,16 @@ module Administrate
       end
 
       def inspect_hash_as_ruby(hash)
-        hash.map { |key, value| "#{key}: #{value.inspect}" }.join(", ")
+        hash.map do |key, value|
+          v_str = value.respond_to?(:call) ? proc_string(value) : value.inspect
+          "#{key}: #{v_str}"
+        end.join(", ")
+      end
+
+      def proc_string(value)
+        source = value.source_location
+        proc_string = IO.readlines(source.first)[source.second - 1]
+        proc_string[/->[^}]*} | (lambda|proc).*end/x]
       end
     end
   end

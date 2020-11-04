@@ -21,7 +21,7 @@ class <%= class_name %>Dashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
 <%=
   attributes.first(COLLECTION_ATTRIBUTE_LIMIT).map do |attr|
-    "  #{attr}"
+    "    #{attr}"
   end.join("\n")
 %>
   ].freeze
@@ -31,7 +31,7 @@ class <%= class_name %>Dashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = %i[
 <%=
   attributes.map do |attr|
-    "  #{attr}"
+    "    #{attr}"
   end.join("\n")
 %>
   ].freeze
@@ -42,7 +42,7 @@ class <%= class_name %>Dashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = %i[
 <%=
   form_attributes.map do |attr|
-    "  #{attr}"
+    "    #{attr}"
   end.join("\n")
 %>
   ].freeze
@@ -55,7 +55,7 @@ class <%= class_name %>Dashboard < Administrate::BaseDashboard
   # in the search field:
   #
   #   COLLECTION_FILTERS = {
-  #     open: ->(resources) { where(open: true) }
+  #     open: ->(resources) { resources.where(open: true) }
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
