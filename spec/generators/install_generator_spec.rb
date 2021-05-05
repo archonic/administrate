@@ -44,7 +44,7 @@ describe Administrate::Generators::InstallGenerator, :generator do
       run_generator
 
       expect(Rails::Generators).to invoke_generator(
-        "administrate:routes", ["--namespace", "admin"]
+        "administrate:routes", ["--namespace", :admin]
       )
     end
 
@@ -57,7 +57,7 @@ describe Administrate::Generators::InstallGenerator, :generator do
       run_generator
 
       expect(Rails::Generators).not_to invoke_generator(
-        "administrate:routes", ["--namespace", "admin"]
+        "administrate:routes", ["--namespace", :admin]
       )
     end
 
@@ -97,7 +97,7 @@ describe Administrate::Generators::InstallGenerator, :generator do
       %w[customer order product line_item].each do |resource|
         expect(Rails::Generators).
           to invoke_generator(
-            "administrate:dashboard", [resource, "--namespace", "admin"]
+            "administrate:dashboard", [resource, "--namespace", :admin]
           )
       end
     end
