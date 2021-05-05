@@ -3,6 +3,7 @@ module Administrate
     protect_from_forgery with: :exception
 
     def index
+      authorize_resource(resource_class)
       search_term = params[:search].to_s.strip
       resources = Administrate::Search.new(scoped_resource,
                                            dashboard_class,
@@ -52,7 +53,7 @@ module Administrate
       else
         render :new, locals: {
           page: Administrate::Page::Form.new(dashboard, resource),
-        }
+        }, status: :unprocessable_entity
       end
     end
 
@@ -65,7 +66,7 @@ module Administrate
       else
         render :edit, locals: {
           page: Administrate::Page::Form.new(dashboard, requested_resource),
-        }
+        }, status: :unprocessable_entity
       end
     end
 
